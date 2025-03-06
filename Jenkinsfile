@@ -2,6 +2,10 @@ pipeline {
     agent { label "Jenkins-Agent" }
     environment {
               APP_NAME = "register-app-pipeline"
+        parameters {
+            string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Docker Image Tag')
+        }
+
     }
 
     stages {
@@ -21,7 +25,7 @@ pipeline {
             steps {
                 sh """
                    cat deployment.yaml
-                   sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yaml
+                   sed -i 's|image: amol297/register-app-pipeline:.*|image: amol297/register-app-pipeline:${IMAGE_TAG}|g' deployment.yaml
                    cat deployment.yaml
                 """
             }
